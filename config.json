@@ -2,6 +2,12 @@
   "url": "https://www.evyting.com",
   "sslPort": 8000,
   "httpPort": 80,
+  "sslCertPath": {
+    cert: "",
+    chain: "",
+    fullchain: string,
+    privateKey: string
+  },
   "userControl": {
     "reservedTimeRangeIninutes": 15,
     "reservedPerday": 2

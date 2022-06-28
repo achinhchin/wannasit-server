@@ -1,4 +1,5 @@
-import http from 'http';
+import https from 'https';
+import fs from "fs";
 import express from 'express';
 import bodyParser from 'body-parser';
 import firebaseAdmin from 'firebase-admin';
@@ -22,10 +23,15 @@ export class MainApp {
   userReservedNumber: UserReservedNumberModel = new Map();
 
   mainApp: express.Express = express()
-  mainServer: http.Server = http.createServer(this.mainApp);
+  mainServer: https.Server;
 
   constructor(getProjectConfig: ConfigProjectModel) {
     this.projectConfig = getProjectConfig;
+    this.mainServer = https.createServer({
+      cert: fs.readFileSync(this.projectConfig.sslCertPath.cert),
+      key: fs.readFileSync(this.projectConfig.sslCertPath.privateKey),
+      ca: fs.readFileSync(this.projectConfig.sslCertPath.chain)
+    }, this.mainApp);
 
     this.mainApp.use(bodyParser.json());
 
