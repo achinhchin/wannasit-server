@@ -1,4 +1,4 @@
-import https from 'https';
+import http from 'http';
 import fs from "fs";
 import express from 'express';
 import bodyParser from 'body-parser';
@@ -23,15 +23,12 @@ export class MainApp {
   userReservedNumber: UserReservedNumberModel = new Map();
 
   mainApp: express.Express = express()
-  mainServer: https.Server;
+  mainServer: http.Server;
 
   constructor(getProjectConfig: ConfigProjectModel) {
     this.projectConfig = getProjectConfig;
-    this.mainServer = https.createServer({
-      cert: fs.readFileSync(this.projectConfig.sslCertPath.cert),
-      key: fs.readFileSync(this.projectConfig.sslCertPath.privateKey),
-      ca: fs.readFileSync(this.projectConfig.sslCertPath.chain)
-    }, this.mainApp);
+    this.mainServer = http.createServer(
+      this.mainApp);
 
     this.mainApp.use(bodyParser.json());
 

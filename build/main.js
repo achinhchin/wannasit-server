@@ -11,7 +11,7 @@ const mainApp_1 = require("./apps/mainApp/mainApp");
 require("./models/configProjectModel");
 function main() {
     try {
-        var projectConfig = JSON.parse(fs_1.default.readFileSync("./config.json").toString());
+        var projectConfig = JSON.parse(fs_1.default.readFileSync("../config.json").toString());
     }
     catch (error) {
         console.error("error in ./config.json file");
