@@ -5,12 +5,12 @@ import express from 'express';
 import "../../models/configProjectModel";
 
 export class HttpApp {
-  projectConfig: ConfigProjectModel;
+  projectConfig: ProjectConfigModel;
 
   httpApp: express.Express = express();
   httpServer: http.Server = http.createServer(this.httpApp);
 
-  constructor(getProjectConfig: ConfigProjectModel) {
+  constructor(getProjectConfig: ProjectConfigModel) {
     this.projectConfig = getProjectConfig;
 
     this.httpApp.get("*", (req, res) => {

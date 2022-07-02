@@ -1,4 +1,4 @@
-type ConfigProjectModel = {
+type ProjectConfigModel = {
   url: string;
   sslPort: number;
   httpPort: number;
@@ -8,8 +8,13 @@ type ConfigProjectModel = {
     privateKey: string
   }
   userControl: {
-    reservedTimeRangeIninutes: number,
-    reservedPerday: number
+<<<<<<< HEAD
+    reserveTimeRangeInMinutes: number,
+    reserveTimeAlertInMinutes: number,
+    reserveTimesPerDay: number
+=======
+    reservedTimeRangeInMinutes: number,
+    reservedNumberPerday: number
+>>>>>>> origin/0.0.a.0
   }
 }
-
