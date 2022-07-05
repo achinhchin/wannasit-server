@@ -1,5 +1,4 @@
 import http from 'http';
-import fs from "fs";
 import express from 'express';
 import bodyParser from 'body-parser';
 import firebaseAdmin from 'firebase-admin';
@@ -57,12 +56,12 @@ export class MainApp {
           }
           if (checkUser) {
             if (req.body.for == "get") {
-<<<<<<< HEAD
-              var chairsState: ChairStateModel = this.chairsState;
+              var chairsState: ChairStateModel = JSON.parse(JSON.stringify(this.chairsState));
               var thisChairPositionReservation: ChairPositionModel | undefined = this.reservationState.get(req.body.uid);
               if (thisChairPositionReservation != undefined) {
                 chairsState[thisChairPositionReservation.column][thisChairPositionReservation.row][thisChairPositionReservation.side ? 1 : 0][thisChairPositionReservation.column] = 3;
               }
+              console.log(this.chairsState[0][0][0][0]);
 
               res.send({ chairsState: chairsState, lastTimeReserve: lastTimeReserve });
             } else if (req.body.for == "reserve") {
@@ -90,15 +89,6 @@ export class MainApp {
                 res.send("4");
               } else if (reserveTimesInDay != undefined && reserveTimesInDay > this.projectConfig.userControl.reserveTimesPerDay - 1) {
                 res.send("5");
-=======
-              res.send(this.tablesState);
-            } else if (req.body.for == "set") {
-              var lastReserved: Date | undefined = this.userLastReserved.get(req.body.uid), reservedNumber: number | undefined = this.userReservedNumber.get(req.body.uid);
-              if (lastReserved != undefined && (new Date()).getTime() - lastReserved?.getTime() < this.projectConfig.userControl.reservedTimeRangeInMinutes * 60 * 1000) {
-                res.send("reservedTimeRange");
-              } else if (reservedNumber != undefined && reservedNumber > 2) {
-                res.send("reservedNumber")
->>>>>>> origin/0.0.a.0
               } else {
                 this.chairsState[chairPosition.row][chairPosition.position][chairPosition.side ? 1 : 0][chairPosition.position] = 1;
                 this.reservationState.set(req.body.uid, chairPosition);
@@ -136,7 +126,7 @@ export class MainApp {
                 this.chairsState[chairPosition.row][chairPosition.column][chairPosition.side ? 1 : 0][chairPosition.position] = 0;
                 res.end();
               }
-            }else {
+            } else {
               // -2 - invalid for
               res.send("-2")
             }
