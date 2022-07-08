@@ -29,6 +29,8 @@ class MainApp {
         this.chairsState = [
             [[[0, 0, 0], [0, 0, 0]], [[0, 0, 0], [0, 0, 0]]],
             [[[0, 0, 0], [0, 0, 0]], [[0, 0, 0], [0, 0, 0]]],
+            [[[0, 0, 0], [0, 0, 0]], [[0, 0, 0], [0, 0, 0]]],
+            [[[0, 0, 0], [0, 0, 0]], [[0, 0, 0], [0, 0, 0]]],
             [[[0, 0, 0], [0, 0, 0]], [[0, 0, 0], [0, 0, 0]]]
         ];
         this.reservationState = new Map();
@@ -60,9 +62,8 @@ class MainApp {
                             var chairsState = JSON.parse(JSON.stringify(this.chairsState));
                             var thisChairPositionReservation = this.reservationState.get(req.body.uid);
                             if (thisChairPositionReservation != undefined) {
-                                chairsState[thisChairPositionReservation.column][thisChairPositionReservation.row][thisChairPositionReservation.side ? 1 : 0][thisChairPositionReservation.column] = 3;
+                                chairsState[thisChairPositionReservation.row][thisChairPositionReservation.column ? 1 : 0][thisChairPositionReservation.side ? 1 : 0][thisChairPositionReservation.position] = 3;
                             }
-                            console.log(this.chairsState[0][0][0][0]);
                             res.send({ chairsState: chairsState, lastTimeReserve: lastTimeReserve });
                         }
                         else if (req.body.for == "reserve") {
@@ -83,10 +84,10 @@ class MainApp {
                             else if (this.reservationState.get(req.body.uid) != undefined) {
                                 res.send("1");
                             }
-                            else if (this.chairsState[chairPosition.row][chairPosition.column][chairPosition.side ? 1 : 0][chairPosition.position] == 1) {
+                            else if (this.chairsState[chairPosition.row][chairPosition.column ? 1 : 0][chairPosition.side ? 1 : 0][chairPosition.position] == 1) {
                                 res.send("2");
                             }
-                            else if (this.chairsState[chairPosition.row][chairPosition.column][chairPosition.side ? 1 : 0][chairPosition.position] == 2) {
+                            else if (this.chairsState[chairPosition.row][chairPosition.column ? 1 : 0][chairPosition.side ? 1 : 0][chairPosition.position] == 2) {
                                 res.send("3");
                             }
                             else if (lastTimeReserve != undefined && (new Date()).getTime() - lastTimeReserve < this.projectConfig.userControl.reserveTimeRangeInMinutes * 60 * 1000) {
@@ -105,7 +106,7 @@ class MainApp {
                                     end: setTimeout(() => {
                                         this.coutdownState.delete(req.body.uid);
                                         this.reservationState.delete(req.body.uid);
-                                        this.chairsState[chairPosition.row][chairPosition.column][chairPosition.side ? 1 : 0][chairPosition.position] = 0;
+                                        this.chairsState[chairPosition.row][chairPosition.column ? 1 : 0][chairPosition.side ? 1 : 0][chairPosition.position] = 0;
                                     }, this.projectConfig.userControl.reserveTimeRangeInMinutes * 60 * 1000)
                                 });
                                 res.end();
@@ -126,7 +127,7 @@ class MainApp {
                                 var chairPosition = req.body.chairPostion;
                                 this.coutdownState.delete(req.body.uid);
                                 this.reservationState.delete(req.body.uid);
-                                this.chairsState[chairPosition.row][chairPosition.column][chairPosition.side ? 1 : 0][chairPosition.position] = 0;
+                                this.chairsState[chairPosition.row][chairPosition.column ? 1 : 0][chairPosition.side ? 1 : 0][chairPosition.position] = 0;
                                 res.end();
                             }
                         }

@@ -1,6 +1,6 @@
 type ChairPositionModel = {
   row: number,
-  column: number,
+  column: boolean,
   side: boolean,
   position: number
 }
